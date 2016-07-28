@@ -47,6 +47,7 @@ let loaded_vimp4python=1
 if (has('python') || has('python/dyn'))
     let loaded_vimp4python=1
 else
+    redraw | echohl WarningMsg | echo "vim-p4: Python not supported!" | echohl None
     finish
 endif
 
@@ -62,6 +63,7 @@ except:
     vim.command("let b:hasp4 = \"0\"")
 EOF
 if b:hasp4 == "0"
+    redraw | echohl WarningMsg | echo "vim-p4: P4 not in path!" | echohl None
     finish
 endif
 
@@ -79,27 +81,27 @@ augroup vimp4python
 
     " Keyboard shortcuts - default <Leader> is \
     " (listed in order of shortcuts)
-    map <silent> <Leader>a :echo <SID>P4Add()<CR>
-    map <silent> <Leader>b :echo <SID>P4Branches()<CR>
-    map <silent> <Leader>c :echo <SID>P4Clients()<CR>
-    map <silent> <Leader>d :echo <SID>P4Delete()<CR>
-    map <silent> <Leader>e :echo <SID>P4Edit()<CR>
-    map <silent> <Leader>f :echo <SID>P4Fstat()<CR> 
-    map <silent> <Leader>g :echo <SID>P4Sync()<CR>
-    map <silent> <Leader>h :echo <SID>P4Filelog()<CR>
-    map <silent> <Leader>i :echo <SID>P4Info()<CR>
-    map <silent> <Leader>k :echo <SID>P4Diff()<CR>
-    map <silent> <Leader>l :echo <SID>P4Lock()<CR>
-    map <silent> <Leader>n :echo <SID>P4Annotate()<CR>
-    map <silent> <Leader>o :echo <SID>P4Opened()<CR>
-    map <silent> <Leader>p :echo <SID>PluginHelp()<CR>
-    map <silent> <Leader>r :echo <SID>P4Revert()<CR>
-    map <silent> <Leader>s :echo <SID>P4Submit()<CR>
-    map <silent> <Leader>t :echo <SID>P4Tag()<CR>
-    map <silent> <Leader>u :echo <SID>P4Unlock()<CR>
-    map <silent> <Leader>w :echo <SID>P4Where()<CR>
-    map <silent> <Leader>x :echo <SID>P4Fix()<CR>
-    map <silent> <Leader>z :echo <SID>P4Run()<CR>
+    map <silent> <Leader>pa :echo <SID>P4Add()<CR>
+    map <silent> <Leader>pb :echo <SID>P4Branches()<CR>
+    map <silent> <Leader>pc :echo <SID>P4Clients()<CR>
+    map <silent> <Leader>pd :echo <SID>P4Delete()<CR>
+    map <silent> <Leader>pe :echo <SID>P4Edit()<CR>
+    map <silent> <Leader>pf :echo <SID>P4Fstat()<CR> 
+    map <silent> <Leader>pg :echo <SID>P4Sync()<CR>
+    map <silent> <Leader>ph :echo <SID>P4Filelog()<CR>
+    map <silent> <Leader>pi :echo <SID>P4Info()<CR>
+    map <silent> <Leader>pk :echo <SID>P4Diff()<CR>
+    map <silent> <Leader>pl :echo <SID>P4Lock()<CR>
+    map <silent> <Leader>pn :echo <SID>P4Annotate()<CR>
+    map <silent> <Leader>po :echo <SID>P4Opened()<CR>
+    map <silent> <Leader>pp :echo <SID>PluginHelp()<CR>
+    map <silent> <Leader>pr :echo <SID>P4Revert()<CR>
+    map <silent> <Leader>ps :echo <SID>P4Submit()<CR>
+    map <silent> <Leader>pt :echo <SID>P4Tag()<CR>
+    map <silent> <Leader>pu :echo <SID>P4Unlock()<CR>
+    map <silent> <Leader>pw :echo <SID>P4Where()<CR>
+    map <silent> <Leader>px :echo <SID>P4Fix()<CR>
+    map <silent> <Leader>pz :echo <SID>P4Run()<CR>
 
     " menus
     " (listed in order of shortcuts)
