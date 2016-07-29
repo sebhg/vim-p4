@@ -70,14 +70,13 @@ endif
 " set this to 0 to disable ruler calls
 let P4SetRuler = 1
 
-"
-" define the mappings that provide the user interface to this plug-in
-"
-augroup vimp4python
+function! s:P4SetupBuffer()
+    if index(['nofile', 'help', 'quickfix'], &buftype) >= 0
+        let b:P4IgnoreBuffer=1
+        return
+    endif
 
-    " events
-    autocmd BufRead * call <SID>P4InitialBufferVariables()
-    autocmd BufRead * call <SID>P4FstatVars()
+    let b:P4IgnoreBuffer=0
 
     " Keyboard shortcuts - default <Leader> is \
     " (listed in order of shortcuts)
@@ -174,6 +173,14 @@ augroup vimp4python
     menu <silent> &Perforce.Admin.Trigger\ Table :echo <SID>P4Triggers()<CR>
     menu <silent> &Perforce.Admin.Tunables :echo <SID>P4Tunables()<CR>
     menu <silent> &Perforce.Admin.Typemap\ Table :echo <SID>P4Typemap()<CR>
+endfunction
+
+"
+" define the mappings that provide the user interface to this plug-in
+"
+augroup vimp4python
+    au!
+    au BufRead * <SID>P4SetupBuffer()
 augroup END
 
 "
@@ -231,7 +238,10 @@ endfunction
 " Produce string for ruler output
 "
 function P4RulerStatus()
-    if !exists( "b:headrev" ) 
+    if b:P4IgnoreBuffer
+        return ""
+    endif
+    if !exists( "b:headrev" )
         call s:P4InitialBufferVariables()
     endif
     if b:action == ""
