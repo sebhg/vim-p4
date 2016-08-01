@@ -58,11 +58,11 @@ python << EOF
 try:
     import vim, P4
     p4 = P4.P4()
-    vim.command("let b:hasp4 = \"1\"")
+    vim.command("let b:P4hasp4 = \"1\"")
 except:
-    vim.command("let b:hasp4 = \"0\"")
+    vim.command("let b:P4hasp4 = \"0\"")
 EOF
-if b:hasp4 == "0"
+if b:P4hasp4 == "0"
     redraw | echohl WarningMsg | echo "vim-p4: P4 not in path!" | echohl None
     finish
 endif
@@ -70,109 +70,130 @@ endif
 " set this to 0 to disable ruler calls
 let P4SetRuler = 1
 
+
+
+" Keyboard shortcuts - default <Leader> is \
+" (listed in order of shortcuts)
+map <silent> <Leader>pa :echo <SID>P4Add()<CR>
+map <silent> <Leader>pb :echo <SID>P4Branches()<CR>
+map <silent> <Leader>pc :echo <SID>P4Clients()<CR>
+map <silent> <Leader>pd :echo <SID>P4Delete()<CR>
+map <silent> <Leader>pe :echo <SID>P4Edit()<CR>
+map <silent> <Leader>pf :echo <SID>P4Fstat()<CR> 
+map <silent> <Leader>pg :echo <SID>P4Sync()<CR>
+map <silent> <Leader>ph :echo <SID>P4Filelog()<CR>
+map <silent> <Leader>pi :echo <SID>P4Info()<CR>
+map <silent> <Leader>pk :echo <SID>P4Diff()<CR>
+map <silent> <Leader>pl :echo <SID>P4Lock()<CR>
+map <silent> <Leader>pn :echo <SID>P4Annotate()<CR>
+map <silent> <Leader>po :echo <SID>P4Opened()<CR>
+map <silent> <Leader>pp :echo <SID>PluginHelp()<CR>
+map <silent> <Leader>pr :echo <SID>P4Revert()<CR>
+map <silent> <Leader>ps :echo <SID>P4Submit()<CR>
+map <silent> <Leader>pt :echo <SID>P4Tag()<CR>
+map <silent> <Leader>pu :echo <SID>P4Unlock()<CR>
+map <silent> <Leader>pw :echo <SID>P4Where()<CR>
+map <silent> <Leader>px :echo <SID>P4Fix()<CR>
+map <silent> <Leader>pz :echo <SID>P4Run()<CR>
+
+" menus
+" (listed in order of shortcuts)
+menu <silent> &Perforce.Plugin\ Help :echo <SID>PluginHelp()<CR>
+menu <silent> &Perforce.&Add :echo <SID>P4Add()<CR>
+menu <silent> &Perforce.&Branches\ for\ current\ user :echo <SID>P4Branches()<CR>
+menu <silent> &Perforce.&Clients\ for\ current\ user :echo <SID>P4Clients()<CR>
+menu <silent> &Perforce.&Delete :echo <SID>P4Delete()<CR>
+menu <silent> &Perforce.&Edit :echo <SID>P4Edit()<CR>
+menu <silent> &Perforce.&Fstat :echo <SID>P4Fstat()<CR>
+menu <silent> &Perforce.Connection\ &Info :echo <SID>P4Info()<CR>
+menu <silent> &Perforce.File&log :echo <SID>P4Filelog()<CR>
+menu <silent> &Perforce.A&nnotate :echo <SID>P4Annotate()<CR>
+menu <silent> &Perforce.&Opened\ files :echo <SID>P4Opened()<CR>
+menu <silent> &Perforce.&Revert :echo <SID>P4Revert()<CR>
+menu <silent> &Perforce.&Submit :echo <SID>P4Submit()<CR>
+menu <silent> &Perforce.&Tag :echo <SID>P4Tag()<CR>
+menu <silent> &Perforce.&Where :echo <SID>P4Where()<CR>
+menu <silent> &Perforce.S&ync :echo <SID>P4Sync()<CR>
+menu <silent> &Perforce.Run\ Command :echo <SID>P4Run()<CR>
+menu <silent> &Perforce.File.Attribute\ set :echo <SID>P4Attribute()<CR>
+menu <silent> &Perforce.File.Attribute\ list :echo <SID>P4Attributes()<CR>
+menu <silent> &Perforce.File.Lock :echo <SID>P4Lock()<CR>
+menu <silent> &Perforce.File.Unlock :echo <SID>P4Unlock()<CR>
+menu <silent> &Perforce.Branching.Branch\ Info :echo <SID>P4Branch()<CR>
+menu <silent> &Perforce.File.Changelist\ Info :echo <SID>P4Change()<CR>
+menu <silent> &Perforce.File.Changelists\ For\ File :echo <SID>P4Changes()<CR>
+menu <silent> &Perforce.Workspace.Workspace\ Info :echo <SID>P4Client()<CR>
+menu <silent> &Perforce.File.Diff :echo <SID>P4Diff()<CR>
+menu <silent> &Perforce.File.Diff2 :echo <SID>P4Diff2()<CR>
+menu <silent> &Perforce.Jobs.Fix\ Job :echo <SID>P4Fix()<CR>
+menu <silent> &Perforce.Jobs.Fixes\ for\ Job :echo <SID>P4Fixes()<CR>
+menu <silent> &Perforce.Other.Grep :echo <SID>P4Grep()<CR>
+menu <silent> &Perforce.User.Group\ Info :echo <SID>P4Group()<CR>
+menu <silent> &Perforce.User.Group\ List :echo <SID>P4Groups()<CR>
+menu <silent> &Perforce.Other.Help :echo <SID>P4Help()<CR>
+menu <silent> &Perforce.Branching.Integrated :echo <SID>P4Integrated()<CR>
+menu <silent> &Perforce.Branching.Rev\ Graph :echo <SID>P4RevGraph()<CR>
+menu <silent> &Perforce.Jobs.Job\ Info :echo <SID>P4Job()<CR>
+menu <silent> &Perforce.Jobs.Job\ List :echo <SID>P4Jobs()<CR>
+menu <silent> &Perforce.Labels.Label\ Info :echo <SID>P4Label()<CR>
+menu <silent> &Perforce.Labels.Label\ List :echo <SID>P4Labels()<CR>
+menu <silent> &Perforce.File.Print :echo <SID>P4Print()<CR>
+menu <silent> &Perforce.User.Protections\ Info :echo <SID>P4Protects()<CR>
+menu <silent> &Perforce.File.Reopen\ to\ changelist :echo <SID>P4ReopenChange()<CR>
+menu <silent> &Perforce.File.Reopen\ type :echo <SID>P4ReopenType()<CR>
+menu <silent> &Perforce.File.Resolve\ automatically :echo <SID>P4Resolve()<CR>
+menu <silent> &Perforce.File.Resolve\ status :echo <SID>P4Resolved()<CR>
+menu <silent> &Perforce.Other.Set :echo <SID>P4Set()<CR>
+menu <silent> &Perforce.File.Shelve :echo <SID>P4Shelve()<CR>
+menu <silent> &Perforce.File.Remove\ from\ shelf :echo <SID>P4ShelveRemove()<CR>
+menu <silent> &Perforce.File.Sizes :echo <SID>P4Sizes()<CR>
+menu <silent> &Perforce.User.Tickets :echo <SID>P4Tickets()<CR>
+menu <silent> &Perforce.File.Unshelve :echo <SID>P4Unshelve()<CR>
+menu <silent> &Perforce.User.User\ Info :echo <SID>P4User()<CR>
+menu <silent> &Perforce.User.User\ list :echo <SID>P4Users()<CR>
+menu <silent> &Perforce.File.Verify :echo <SID>P4Verify()<CR>
+menu <silent> &Perforce.Admin.Counters :echo <SID>P4Counters()<CR>
+menu <silent> &Perforce.Admin.Database\ Schema :echo <SID>P4Dbschema()<CR>
+menu <silent> &Perforce.Admin.Database\ Statistics :echo <SID>P4Dbstat()<CR>
+menu <silent> &Perforce.Admin.Depots :echo <SID>P4Depots()<CR>
+menu <silent> &Perforce.Admin.Jobspec :echo <SID>P4Jobspec()<CR>
+menu <silent> &Perforce.Admin.License\ Info :echo <SID>P4License()<CR>
+menu <silent> &Perforce.Admin.Database\ Lock\ Info :echo <SID>P4Lockstat()<CR>
+menu <silent> &Perforce.Admin.Log\ Info :echo <SID>P4Logstat()<CR>
+menu <silent> &Perforce.Admin.Log\ Tail :echo <SID>P4Logtail()<CR>
+menu <silent> &Perforce.Admin.Monitor :echo <SID>P4Monitor()<CR>
+menu <silent> &Perforce.Admin.Obliterate\ Preview :echo <SID>P4Obliterate()<CR>
+menu <silent> &Perforce.Admin.Protections\ Table :echo <SID>P4Protect()<CR>
+menu <silent> &Perforce.Admin.Trigger\ Table :echo <SID>P4Triggers()<CR>
+menu <silent> &Perforce.Admin.Tunables :echo <SID>P4Tunables()<CR>
+menu <silent> &Perforce.Admin.Typemap\ Table :echo <SID>P4Typemap()<CR>
+
+menu disable &Perforce
+
+function! s:P4IgnoreBuffer()
+    return index(['nofile', 'help', 'quickfix', 'nofile'], &buftype) >= 0
+endfunction
+
+"
+" Intialiazes P4 varaibles for the buffer
+"
 function! s:P4SetupBuffer()
-    if index(['nofile', 'help', 'quickfix'], &buftype) >= 0
-        let b:P4IgnoreBuffer=1
+    if s:P4IgnoreBuffer()
+        menu disable &Perforce
         return
     endif
 
-    let b:P4IgnoreBuffer=0
+    call s:P4InitialBufferVariables()
+    call s:P4FstatVars()
+    call s:P4CheckMenuEnabled()
+endfunction
 
-    " Keyboard shortcuts - default <Leader> is \
-    " (listed in order of shortcuts)
-    map <silent> <Leader>pa :echo <SID>P4Add()<CR>
-    map <silent> <Leader>pb :echo <SID>P4Branches()<CR>
-    map <silent> <Leader>pc :echo <SID>P4Clients()<CR>
-    map <silent> <Leader>pd :echo <SID>P4Delete()<CR>
-    map <silent> <Leader>pe :echo <SID>P4Edit()<CR>
-    map <silent> <Leader>pf :echo <SID>P4Fstat()<CR> 
-    map <silent> <Leader>pg :echo <SID>P4Sync()<CR>
-    map <silent> <Leader>ph :echo <SID>P4Filelog()<CR>
-    map <silent> <Leader>pi :echo <SID>P4Info()<CR>
-    map <silent> <Leader>pk :echo <SID>P4Diff()<CR>
-    map <silent> <Leader>pl :echo <SID>P4Lock()<CR>
-    map <silent> <Leader>pn :echo <SID>P4Annotate()<CR>
-    map <silent> <Leader>po :echo <SID>P4Opened()<CR>
-    map <silent> <Leader>pp :echo <SID>PluginHelp()<CR>
-    map <silent> <Leader>pr :echo <SID>P4Revert()<CR>
-    map <silent> <Leader>ps :echo <SID>P4Submit()<CR>
-    map <silent> <Leader>pt :echo <SID>P4Tag()<CR>
-    map <silent> <Leader>pu :echo <SID>P4Unlock()<CR>
-    map <silent> <Leader>pw :echo <SID>P4Where()<CR>
-    map <silent> <Leader>px :echo <SID>P4Fix()<CR>
-    map <silent> <Leader>pz :echo <SID>P4Run()<CR>
-
-    " menus
-    " (listed in order of shortcuts)
-    menu <silent> &Perforce.Plugin\ Help :echo <SID>PluginHelp()<CR>
-    menu <silent> &Perforce.&Add :echo <SID>P4Add()<CR>
-    menu <silent> &Perforce.&Branches\ for\ current\ user :echo <SID>P4Branches()<CR>
-    menu <silent> &Perforce.&Clients\ for\ current\ user :echo <SID>P4Clients()<CR>
-    menu <silent> &Perforce.&Delete :echo <SID>P4Delete()<CR>
-    menu <silent> &Perforce.&Edit :echo <SID>P4Edit()<CR>
-    menu <silent> &Perforce.&Fstat :echo <SID>P4Fstat()<CR>
-    menu <silent> &Perforce.Connection\ &Info :echo <SID>P4Info()<CR>
-    menu <silent> &Perforce.File&log :echo <SID>P4Filelog()<CR>
-    menu <silent> &Perforce.A&nnotate :echo <SID>P4Annotate()<CR>
-    menu <silent> &Perforce.&Opened\ files :echo <SID>P4Opened()<CR>
-    menu <silent> &Perforce.&Revert :echo <SID>P4Revert()<CR>
-    menu <silent> &Perforce.&Submit :echo <SID>P4Submit()<CR>
-    menu <silent> &Perforce.&Tag :echo <SID>P4Tag()<CR>
-    menu <silent> &Perforce.&Where :echo <SID>P4Where()<CR>
-    menu <silent> &Perforce.S&ync :echo <SID>P4Sync()<CR>
-    menu <silent> &Perforce.Run\ Command :echo <SID>P4Run()<CR>
-    menu <silent> &Perforce.File.Attribute\ set :echo <SID>P4Attribute()<CR>
-    menu <silent> &Perforce.File.Attribute\ list :echo <SID>P4Attributes()<CR>
-    menu <silent> &Perforce.File.Lock :echo <SID>P4Lock()<CR>
-    menu <silent> &Perforce.File.Unlock :echo <SID>P4Unlock()<CR>
-    menu <silent> &Perforce.Branching.Branch\ Info :echo <SID>P4Branch()<CR>
-    menu <silent> &Perforce.File.Changelist\ Info :echo <SID>P4Change()<CR>
-    menu <silent> &Perforce.File.Changelists\ For\ File :echo <SID>P4Changes()<CR>
-    menu <silent> &Perforce.Workspace.Workspace\ Info :echo <SID>P4Client()<CR>
-    menu <silent> &Perforce.File.Diff :echo <SID>P4Diff()<CR>
-    menu <silent> &Perforce.File.Diff2 :echo <SID>P4Diff2()<CR>
-    menu <silent> &Perforce.Jobs.Fix\ Job :echo <SID>P4Fix()<CR>
-    menu <silent> &Perforce.Jobs.Fixes\ for\ Job :echo <SID>P4Fixes()<CR>
-    menu <silent> &Perforce.Other.Grep :echo <SID>P4Grep()<CR>
-    menu <silent> &Perforce.User.Group\ Info :echo <SID>P4Group()<CR>
-    menu <silent> &Perforce.User.Group\ List :echo <SID>P4Groups()<CR>
-    menu <silent> &Perforce.Other.Help :echo <SID>P4Help()<CR>
-    menu <silent> &Perforce.Branching.Integrated :echo <SID>P4Integrated()<CR>
-    menu <silent> &Perforce.Branching.Rev\ Graph :echo <SID>P4RevGraph()<CR>
-    menu <silent> &Perforce.Jobs.Job\ Info :echo <SID>P4Job()<CR>
-    menu <silent> &Perforce.Jobs.Job\ List :echo <SID>P4Jobs()<CR>
-    menu <silent> &Perforce.Labels.Label\ Info :echo <SID>P4Label()<CR>
-    menu <silent> &Perforce.Labels.Label\ List :echo <SID>P4Labels()<CR>
-    menu <silent> &Perforce.File.Print :echo <SID>P4Print()<CR>
-    menu <silent> &Perforce.User.Protections\ Info :echo <SID>P4Protects()<CR>
-    menu <silent> &Perforce.File.Reopen\ to\ changelist :echo <SID>P4ReopenChange()<CR>
-    menu <silent> &Perforce.File.Reopen\ type :echo <SID>P4ReopenType()<CR>
-    menu <silent> &Perforce.File.Resolve\ automatically :echo <SID>P4Resolve()<CR>
-    menu <silent> &Perforce.File.Resolve\ status :echo <SID>P4Resolved()<CR>
-    menu <silent> &Perforce.Other.Set :echo <SID>P4Set()<CR>
-    menu <silent> &Perforce.File.Shelve :echo <SID>P4Shelve()<CR>
-    menu <silent> &Perforce.File.Remove\ from\ shelf :echo <SID>P4ShelveRemove()<CR>
-    menu <silent> &Perforce.File.Sizes :echo <SID>P4Sizes()<CR>
-    menu <silent> &Perforce.User.Tickets :echo <SID>P4Tickets()<CR>
-    menu <silent> &Perforce.File.Unshelve :echo <SID>P4Unshelve()<CR>
-    menu <silent> &Perforce.User.User\ Info :echo <SID>P4User()<CR>
-    menu <silent> &Perforce.User.User\ list :echo <SID>P4Users()<CR>
-    menu <silent> &Perforce.File.Verify :echo <SID>P4Verify()<CR>
-    menu <silent> &Perforce.Admin.Counters :echo <SID>P4Counters()<CR>
-    menu <silent> &Perforce.Admin.Database\ Schema :echo <SID>P4Dbschema()<CR>
-    menu <silent> &Perforce.Admin.Database\ Statistics :echo <SID>P4Dbstat()<CR>
-    menu <silent> &Perforce.Admin.Depots :echo <SID>P4Depots()<CR>
-    menu <silent> &Perforce.Admin.Jobspec :echo <SID>P4Jobspec()<CR>
-    menu <silent> &Perforce.Admin.License\ Info :echo <SID>P4License()<CR>
-    menu <silent> &Perforce.Admin.Database\ Lock\ Info :echo <SID>P4Lockstat()<CR>
-    menu <silent> &Perforce.Admin.Log\ Info :echo <SID>P4Logstat()<CR>
-    menu <silent> &Perforce.Admin.Log\ Tail :echo <SID>P4Logtail()<CR>
-    menu <silent> &Perforce.Admin.Monitor :echo <SID>P4Monitor()<CR>
-    menu <silent> &Perforce.Admin.Obliterate\ Preview :echo <SID>P4Obliterate()<CR>
-    menu <silent> &Perforce.Admin.Protections\ Table :echo <SID>P4Protect()<CR>
-    menu <silent> &Perforce.Admin.Trigger\ Table :echo <SID>P4Triggers()<CR>
-    menu <silent> &Perforce.Admin.Tunables :echo <SID>P4Tunables()<CR>
-    menu <silent> &Perforce.Admin.Typemap\ Table :echo <SID>P4Typemap()<CR>
+function! s:P4CheckMenuEnabled()
+    if exists('b:P4connected') && b:P4connected
+        menu enable &Perforce
+    else
+        menu disable &Perforce
+    endif
 endfunction
 
 "
@@ -180,19 +201,20 @@ endfunction
 "
 augroup vimp4python
     au!
-    au BufRead * <SID>P4SetupBuffer()
+    au BufRead * call <SID>P4SetupBuffer()
+    au BufEnter * call <SID>P4CheckMenuEnabled()
 augroup END
-
 "
 " initialize status variables
 "
 function s:P4InitialBufferVariables()
-    let b:headrev=""
-    let b:headtype=""
-    let b:depotfile=""
-    let b:haverev=""
-    let b:action=""
-    let b:changelist=""
+    let b:P4connected=0
+    let b:P4headrev=""
+    let b:P4headtype=""
+    let b:P4depotfile=""
+    let b:P4haverev=""
+    let b:P4action=""
+    let b:P4changelist=""
 endfunction
 
 "
@@ -238,20 +260,20 @@ endfunction
 " Produce string for ruler output
 "
 function P4RulerStatus()
-    if b:P4IgnoreBuffer
+    if s:P4IgnoreBuffer()
         return ""
     endif
-    if !exists( "b:headrev" )
+    if !exists( "b:P4headrev" )
         call s:P4InitialBufferVariables()
     endif
-    if b:action == ""
-        if b:headrev == ""
+    if b:P4action == ""
+        if b:P4headrev == ""
             return "[Not in P4]" 
         else
-            return "[P4: " . b:haverev . "/" . b:headrev . " (" . b:headtype . ")]"
+            return "[P4: " . b:P4haverev . "/" . b:P4headrev . " (" . b:P4headtype . ")]"
         endif
     else
-        return "[P4: " . b:action . " (". b:changelist . ")]"
+        return "[P4: " . b:P4action . " (". b:P4changelist . ")]"
     endif
 endfunction
 
@@ -266,6 +288,7 @@ p4.prog = "VIM Integration"
 P4Exception = P4.P4Exception
 try:
     p4.connect()
+    vim.command("let b:P4connected = 1")
     p4.tagged = True
     out = p4.run("fstat", vim.current.buffer.name)
     if not (isinstance(out, types.NoneType)):
@@ -288,12 +311,12 @@ try:
         depotFile = ""
         if 'depotFile' in m:
             depotFile = m['depotFile']
-        vim.command("let b:headrev = \"%s\"" % headRev)
-        vim.command("let b:headtype = \"%s\"" % headType)
-        vim.command("let b:changelist = \"%s\"" % change)
-        vim.command("let b:depotfile = \"%s\"" % depotFile)
-        vim.command("let b:haverev = \"%s\"" % haveRev)
-        vim.command("let b:action = \"%s\"" % action)
+        vim.command("let b:P4headrev = \"%s\"" % headRev)
+        vim.command("let b:P4headtype = \"%s\"" % headType)
+        vim.command("let b:P4changelist = \"%s\"" % change)
+        vim.command("let b:P4depotfile = \"%s\"" % depotFile)
+        vim.command("let b:P4haverev = \"%s\"" % haveRev)
+        vim.command("let b:P4action = \"%s\"" % action)
     p4.disconnect()
 
 except P4Exception:
@@ -2305,14 +2328,14 @@ try:
             graph = graph + fromFile + endFromRev + '@' + toFile + endToRev + '@change ' + change + ' ' + how + "|"
         if graph == '':
             graph = 'NONE'
-        vim.command("let b:graph = \"%s\"" % graph)
+        vim.command("let b:P4graph = \"%s\"" % graph)
     else:
         print("No integration records")
-        vim.command("let b:graph = \"NONE\"")
+        vim.command("let b:P4graph = \"NONE\"")
     p4.disconnect()
 
 except P4Exception:
-    vim.command("let b:graph = \"NONE\"")
+    vim.command("let b:P4graph = \"NONE\"")
     for e in p4.errors:
         print e
     for w in p4.warnings:
@@ -2320,7 +2343,7 @@ except P4Exception:
 EOF
 perl << EOF
 use Graph::Easy; 
-my @gstr = VIM::Eval('b:graph');
+my @gstr = VIM::Eval('b:P4graph');
 if($gstr[1] ne '' and $gstr[1] ne 'NONE') {
     my @parts = split(/\|/, $gstr[1]);
     my $graph = Graph::Easy->new();
